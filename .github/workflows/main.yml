@@ -31,5 +31,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: pms5003s-firmware
-          # 放弃指定 .esphome 目录，直接从根目录递归查找
-          path: "**/*.bin"
+          # 直接定位到具体目录，避免通配符歧义
+          path: .esphome/build/air-quality-pms5003s/.pioenvs/air-quality-pms5003s/firmware.factory.bin
+          # 关键点：强制要求上传包含隐藏路径的文件
+          include-hidden-files: true
+          if-no-files-found: error
