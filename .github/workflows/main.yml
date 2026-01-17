@@ -24,9 +24,11 @@ jobs:
         # 注意：如果你的文件名不是 my_esp32_s3.yaml，请修改下面这一行
         run: esphome compile air-quality-pms5003s.yaml
 
-      - name: Upload Firmware Binary
+      - name: Upload Binary
         uses: actions/upload-artifact@v4
         with:
-          name: esp32-s3-firmware
-          # 这一行会自动找到编译出来的 factory.bin 文件
-          path: .esphome/build/*/.*.bin
+          name: pms5003s-firmware
+          # 修改这里：去掉 bin 前面的那个点，直接匹配所有 bin 文件
+          path: .esphome/build/*/.*bin  
+          # 如果上面还不行，最稳的写法是下面这一行（匹配 build 目录下所有子目录里的 bin）：
+          # path: .esphome/build/**/*.bin
