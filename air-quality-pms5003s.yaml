@@ -1,0 +1,106 @@
+esphome:
+  name: air-quality-pms5003s
+  friendly_name: "空气质量监测仪"
+  comment: "ESP32 + PMS5003S + OLED (含甲醛)"
+
+# 核心修改处：指定正确的开发板型号
+esp32:
+  board: esp32-s3-devkitc-1  # 【关键修改】使用ESP32-S3的开发板标识
+  framework:
+    type: arduino
+
+
+# 启用日志，方便调试
+logger:
+  level: INFO
+
+# WiFi配置
+wifi:
+  ssid: "IM-1601"
+  password: "asdfghjkl;'"
+  min_auth_mode: WPA2
+
+# 与Home Assistant通信的核心
+api:
+  encryption:
+    key: "V7HED0Y55UoteVj974gw6EpWWzDFufqJMpJs/XxRbKg=" # 【关键】必须通过向导生成并粘贴
+
+# OTA无线升级
+ota:
+  platform: esphome
+  password: "qwe@1234" # 请务必使用一个强密码
+
+# ========== 硬件接口配置 ==========
+uart:
+  id: uart_pms
+  tx_pin: GPIO17  # 【重要】根据你的实际接线修改
+  rx_pin: GPIO18  # 【重要】传感器的 TX 脚应接在此引脚
+  baud_rate: 9600
+
+i2c:
+  sda: GPIO38     # 【重要】根据你的实际接线修改
+  scl: GPIO8      # 【重要】根据你的实际接线修改
+  scan: true
+
+# ========== 传感器配置 (使用官方pmsx003组件) ==========
+sensor:
+  # PMS5003S 颗粒物传感器
+  - platform: pmsx003
+    uart_id: uart_pms
+    type: PMS5003S
+    update_interval: 30s
+    pm_1_0:
+      name: "PM1.0 浓度"
+      unit_of_measurement: "µg/m³"
+      accuracy_decimals: 0
+      id: pm10_sensor
+      filters:
+        - sliding_window_moving_average:
+            window_size: 3
+            send_every: 1
+    pm_2_5:
+      name: "PM2.5 浓度"
+      unit_of_measurement: "µg/m³"
+      accuracy_decimals: 0
+      id: pm25_sensor
+      filters:
+        - sliding_window_moving_average:
+            window_size: 3
+            send_every: 1
+    pm_10_0:
+      name: "PM10 浓度"
+      unit_of_measurement: "µg/m³"
+      accuracy_decimals: 0
+      id: pm100_sensor
+      filters:
+        - sliding_window_moving_average:
+            window_size: 3
+            send_every: 1
+
+# ========== OLED 显示屏配置 ==========
+display:
+  - platform: ssd1306_i2c
+    model: "SSD1306 128x64"
+    address: 0x3C
+    update_interval: 2s
+    lambda: |-
+      // 显示标题
+      it.printf(0, 0, id(font_roboto12), "Air Quality Monitor");
+      // 显示PM2.5
+      it.printf(0, 15, id(font_roboto12), "PM2.5: %3.0f ug/m3", id(pm25_sensor).state);
+      // 显示PM10
+      it.printf(0, 30, id(font_roboto12), "PM10:  %3.0f ug/m3", id(pm100_sensor).state);
+      // 预留甲醛显示行（暂时注释掉）
+      it.printf(0, 45, id(font_roboto12), "HCHO:   -- mg/m3");
+      // it.printf(0, 45, id(font_roboto12), "HCHO: %.3f mg/m3", id(hcho_sensor).state);
+
+# 字体定义
+font:
+  - file: "gfonts://Roboto"
+    id: font_roboto12
+    size: 12
+
+# 可选：添加一个重启开关，方便调试
+#switch:
+#  - platform: restart
+#    name: "重启设备"
