@@ -21,12 +21,15 @@ jobs:
           esphome version
 
       - name: Compile Binary
-        # 注意：如果你的文件名不是 my_esp32_s3.yaml，请修改下面这一行
         run: esphome compile air-quality-pms5003s.yaml
+
+      - name: List files (Debug)
+        # 这一步会列出当前目录下所有 bin 文件，帮我们确认位置
+        run: find . -name "*.bin"
 
       - name: Upload Binary
         uses: actions/upload-artifact@v4
         with:
           name: pms5003s-firmware
-          # 最强匹配模式：在 .esphome 文件夹下递归查找任何以 .bin 结尾的文件
-          path: .esphome/**/*.bin
+          # 放弃指定 .esphome 目录，直接从根目录递归查找
+          path: "**/*.bin"
