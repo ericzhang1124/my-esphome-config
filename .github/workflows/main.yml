@@ -28,7 +28,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: pms5003s-firmware
-          # 修改这里：去掉 bin 前面的那个点，直接匹配所有 bin 文件
-          path: .esphome/build/*/.*bin  
-          # 如果上面还不行，最稳的写法是下面这一行（匹配 build 目录下所有子目录里的 bin）：
-          # path: .esphome/build/**/*.bin
+          # 最强匹配模式：在 .esphome 文件夹下递归查找任何以 .bin 结尾的文件
+          path: .esphome/**/*.bin
