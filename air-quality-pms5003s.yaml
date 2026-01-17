@@ -7,9 +7,6 @@ esp32:
   board: esp32-s3-devkitc-1  # 【关键修改】使用ESP32-S3的开发板标识
   framework:
     type: arduino
-  variant: esp32s3
-  platformio_options:
-    board_build.flash_mode: dio
 
 # 开启 Web 页面服务
 web_server:
