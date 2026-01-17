@@ -8,7 +8,8 @@ esp32:
   framework:
     type: arduino
   variant: esp32s3
-  board_build.flash_mode: dio
+  platformio_options:
+    board_build.flash_mode: dio
 
 # 开启 Web 页面服务
 web_server:
@@ -80,7 +81,7 @@ display:
     model: "SSD1306 128x64"
     address: 0x3C
     lambda: |-
-      it.printf(0, 0, id(font_roboto12), "My Rooms Air");
+      it.printf(0, 0, id(font_roboto12), "My Room Air");
       
       if (id(pm25_sensor).has_state()) {
         it.printf(0, 15, id(font_roboto12), "PM2.5: %.0f ug/m3", id(pm25_sensor).state);
