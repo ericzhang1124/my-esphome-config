@@ -1,0 +1,22 @@
+name: Compile ESPHome
+
+on:
+  workflow_dispatch: # 允许你手动点击按钮开始编译
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build ESPHome Binary
+        uses: esphome/build-action@v5
+        id: esphome-build
+        with:
+          yaml_file: my_esp32.yaml # 确保这里和你上传的文件名一致
+          version: latest
+
+      - name: Upload binary
+        uses: actions/upload-artifact@v4
+        with:
+          name: my-esp-firmware
+          path: ${{ steps.esphome-build.outputs.name }}
