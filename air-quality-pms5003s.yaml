@@ -1,5 +1,5 @@
 esphome:
-  name: my-esp32-s3
+  name: air-quality-pms5003s
 
 esp32:
   board: esp32-s3-devkitc-1  # 这是最通用的 S3 板型
