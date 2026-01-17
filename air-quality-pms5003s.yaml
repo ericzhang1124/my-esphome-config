@@ -8,6 +8,10 @@ esp32:
   framework:
     type: arduino
 
+# 开启 Web 页面服务
+web_server:
+  port: 80
+
 logger:
   level: INFO
 
@@ -52,11 +56,14 @@ sensor:
       name: "PM10"
       id: pm100_sensor
     # 【新增】甲醛传感器配置
+    # 甲醛传感器换算修改
     formaldehyde:
       name: "HCHO 甲醛"
       id: hcho_sensor
       unit_of_measurement: "mg/m³"
       accuracy_decimals: 3
+      filters:
+        - multiply: 0.001
 # ========== 字体定义 ==========
 font:
   - file: "gfonts://Roboto"
