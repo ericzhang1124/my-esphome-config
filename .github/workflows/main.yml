@@ -1,31 +1,32 @@
-name: Compile ESPHome
+name: Compile ESPHome S3
 
 on:
-  workflow_dispatch:
+  workflow_dispatch: # 允许你手动点击 "Run workflow" 触发
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.9'
+          python-version: '3.10'
 
       - name: Install ESPHome
         run: |
           pip install esphome
+          esphome version
 
-      - name: Compile MQTT Binary
-        # 请确保下面的 my_esp32.yaml 对应你仓库里的文件名
-        run: esphome compile my_esp32.yaml
+      - name: Compile Binary
+        # 注意：如果你的文件名不是 my_esp32_s3.yaml，请修改下面这一行
+        run: esphome compile my_esp32_s3.yaml
 
-      - name: Upload Binary
+      - name: Upload Firmware Binary
         uses: actions/upload-artifact@v4
         with:
-          name: esphome-binaries
-          # 编译后的文件通常在 .esphome/build/设备名/.pioenvs/设备名/firmware.factory.bin
-          # 我们直接打包整个 build 文件夹下的 bin
+          name: esp32-s3-firmware
+          # 这一行会自动找到编译出来的 factory.bin 文件
           path: .esphome/build/*/.*.bin
