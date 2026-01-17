@@ -8,7 +8,6 @@ esp32:
 
 # 开启日志，S3 默认通常通过 USB 串口输出
 logger:
-  hardware_uart: USB_SERIAL_JTAG  # 关键：S3 很多板子日志是通过内置 USB 输出的
 
 # 开启网页服务
 web_server:
