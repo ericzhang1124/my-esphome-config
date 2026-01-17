@@ -12,6 +12,7 @@ esp32:
 web_server:
   port: 80
   version: 2
+  local: true
 
 logger:
   level: INFO
@@ -26,8 +27,8 @@ api:
     key: "V7HED0Y55UoteVj974gw6EpWWzDFufqJMpJs/XxRbKg="
 
 ota:
-  platform: esphome
-  password: "qwe@1234" # 请务必使用一个强密码
+  - platform: esphome
+    password: "qwe@1234" # 请务必使用一个强密码
 
 # ========== 硬件接口配置 ==========
 uart:
@@ -76,7 +77,7 @@ display:
     model: "SSD1306 128x64"
     address: 0x3C
     lambda: |-
-      it.printf(0, 0, id(font_roboto12), "My Room Air");
+      it.printf(0, 0, id(font_roboto12), "My Rooms Air");
       
       if (id(pm25_sensor).has_state()) {
         it.printf(0, 15, id(font_roboto12), "PM2.5: %.0f ug/m3", id(pm25_sensor).state);
