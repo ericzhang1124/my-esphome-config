@@ -7,12 +7,15 @@ esp32:
   board: esp32-s3-devkitc-1  # 【关键修改】使用ESP32-S3的开发板标识
   framework:
     type: arduino
+  variant: esp32s3
+  board_build.flash_mode: dio
 
 # 开启 Web 页面服务
 web_server:
   port: 80
-  version: 2
-  local: true
+  include_internal: true
+
+web_server_base:
 
 logger:
   level: INFO
