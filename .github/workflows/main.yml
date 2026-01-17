@@ -22,7 +22,7 @@ jobs:
 
       - name: Compile Binary
         # 注意：如果你的文件名不是 my_esp32_s3.yaml，请修改下面这一行
-        run: esphome compile my_esp32_s3.yaml
+        run: air-quality-pms5003s.yaml
 
       - name: Upload Firmware Binary
         uses: actions/upload-artifact@v4
