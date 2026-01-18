@@ -37,6 +37,7 @@ uart:
   tx_pin: GPIO1
   rx_pin: GPIO2
   baud_rate: 9600
+  rx_buffer_size: 512
 
 i2c:
   sda: GPIO5
@@ -55,6 +56,10 @@ sensor:
     pm_2_5:
       name: "PM2.5"
       id: pm25_sensor
+      filters:
+        - sliding_window_moving_average: # 增加平滑滤波，数据不跳变
+            window_size: 5
+            send_every: 1
     pm_10_0:
       name: "PM10"
       id: pm100_sensor
@@ -77,10 +82,14 @@ display:
     model: "SSD1306 128x64"
     address: 0x3C
     lambda: |-
-      it.printf(0, 0, id(font_roboto12), "My Room Air");
+      it.printf(0, 0, id(font_roboto12), "Air Quality Station");
       
+      // PM2.5 显示及等级提示
       if (id(pm25_sensor).has_state()) {
         it.printf(0, 15, id(font_roboto12), "PM2.5: %.0f ug/m3", id(pm25_sensor).state);
+        if (id(pm25_sensor).state < 35) it.print(95, 15, id(font_roboto12), "OK");
+        else if (id(pm25_sensor).state < 75) it.print(95, 15, id(font_roboto12), "!!");
+        else it.print(95, 15, id(font_roboto12), "X");
       }
       
       if (id(pm100_sensor).has_state()) {
