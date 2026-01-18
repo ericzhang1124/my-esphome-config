@@ -87,6 +87,7 @@ display:
       // PM2.5 显示及等级提示
       if (id(pm25_sensor).has_state()) {
         it.printf(0, 15, id(font_roboto12), "PM2.5: %.0f ug/m3", id(pm25_sensor).state);
+      }
       
       if (id(pm100_sensor).has_state()) {
         it.printf(0, 30, id(font_roboto12), "PM10 : %.0f ug/m3", id(pm100_sensor).state);
