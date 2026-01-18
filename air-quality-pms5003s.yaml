@@ -34,13 +34,13 @@ ota:
 # ========== 硬件接口配置 ==========
 uart:
   id: uart_pms
-  tx_pin: GPIO17
-  rx_pin: GPIO18
+  tx_pin: GPIO2
+  rx_pin: GPIO1
   baud_rate: 9600
 
 i2c:
-  sda: GPIO38
-  scl: GPIO8
+  sda: GPIO5
+  scl: GPIO4
   scan: true
 
 # ========== 传感器配置 ==========
@@ -58,7 +58,6 @@ sensor:
     pm_10_0:
       name: "PM10"
       id: pm100_sensor
-    # 【新增】甲醛传感器配置
     # 甲醛传感器换算修改
     formaldehyde:
       name: "HCHO 甲醛"
